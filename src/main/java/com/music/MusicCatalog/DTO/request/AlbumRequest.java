@@ -1,11 +1,12 @@
 package com.music.MusicCatalog.DTO.request;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Data
 @Builder
@@ -22,6 +23,8 @@ public class AlbumRequest {
     private String artist;
     
     @NotNull(message = "L'année de sortie est obligatoire")
+    @Min(value = 1980, message = "L'année de sortie doit être supérieure à 1980")
+    @Max(value = 2024, message = "L'année de sortie doit être inférieure à 2024")
     private Integer releaseYear;
     
     @NotBlank(message = "Le genre est obligatoire")

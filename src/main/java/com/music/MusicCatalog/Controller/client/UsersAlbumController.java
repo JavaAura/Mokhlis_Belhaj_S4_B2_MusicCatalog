@@ -20,6 +20,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api/users/albums")
@@ -58,15 +60,15 @@ public class UsersAlbumController {
      * @return the page of albums
      * **/
     @GetMapping("/searchByTitle")
-    @Operation(summary = "Get albums by title", description = "Retrieves albums by title with pagination and sorting options")
-    @ApiResponse(responseCode = "200", description = "Albums successfully retrieved", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
+    @Operation(summary = "trouve les albums par titre", description = "trouve les albums par titre avec pagination et options de tri")
+    @ApiResponse(responseCode = "200", description = "albums trouvés", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
     @ApiResponse(responseCode = "404", description = "Albums not found", content = @Content(mediaType = "application/json", schema = @Schema(example = """
         {
-            "message": "Albums not found",
+            "message": "albums non trouvés",
             "status": 404
         }
         """)))
-    @ApiResponse(responseCode = "400", description = "Invalid request parameters", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+    @ApiResponse(responseCode = "400", description = "paramètre de requête invalide", content = @Content(mediaType = "application/json", schema = @Schema(example = """
         {
             "message": "le paramètre requis est manquant: title",
             "status": 400
@@ -92,17 +94,17 @@ public class UsersAlbumController {
      * @return the page of albums
      * **/
     @GetMapping("/searchByArtist")
-    @Operation(summary = "Get albums by artist", description = "Retrieves albums by artist with pagination and sorting options")
-    @ApiResponse(responseCode = "200", description = "Albums successfully retrieved", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
-    @ApiResponse(responseCode = "404", description = "Albums not found", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+    @Operation(summary = "trouve les albums par artiste", description = "trouve les albums par artiste avec pagination et options de tri")
+    @ApiResponse(responseCode = "200", description = "albums trouvés", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
+    @ApiResponse(responseCode = "404", description = "albums non trouvés", content = @Content(mediaType = "application/json", schema = @Schema(example = """
         {
-            "message": "Albums not found",
+            "message": "albums non trouvés",
             "status": 404
         }
         """)))
-    @ApiResponse(responseCode = "400", description = "Invalid request parameters", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+    @ApiResponse(responseCode = "400", description = "paramètre de requête invalide", content = @Content(mediaType = "application/json", schema = @Schema(example = """
         {
-            "message": "Invalid request parameters :artist",
+            "message": "paramètre de requête invalide : artist",
             "status": 400
         }
         """)))
@@ -114,4 +116,44 @@ public class UsersAlbumController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
         return albumService.getAlbumsByArtist(artist, pageable);
     }
+
+
+    
+    /** 
+     * Filter albums by year
+     * @param startYear the start year
+     * @param endYear the end year
+     * @param page the page number
+     * @param size the page size
+     * @param sortBy the field to sort by
+     * @param sortOrder the sort order
+     * @return the page of albums
+     * **/
+    @GetMapping("/filterByYear")
+    @Operation(summary = "filtre les albums par année de sortie", description = "trouve les albums par année de sortie entre 1980 et 2024")
+    @ApiResponse(responseCode = "200", description = "albums trouvés", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
+    @ApiResponse(responseCode = "400", description = "année de sortie invalide", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+        {
+            "message": "L'année de sortie doit être entre 1980 et 2024",
+            "status": 400
+        }
+        """)))
+    @ApiResponse(responseCode = "404", description = "albums non trouvés", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+        {
+            "message": "albums non trouvés",
+            "status": 404
+        }
+        """)))
+        
+        public Page<AlbumResponse> filterAlbumsByYear(
+            @RequestParam(defaultValue = "1980") @Min(1980) @Max(2024)  int startYear,
+            @RequestParam(defaultValue = "2024") @Min(1980) @Max(2024)  int endYear,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
+        return albumService.filterAlbumsByYear(startYear, endYear, pageable);
+    }
+
 }

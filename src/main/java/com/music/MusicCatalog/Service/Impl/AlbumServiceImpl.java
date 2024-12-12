@@ -53,4 +53,13 @@ public class AlbumServiceImpl implements AlbumService {
         }
         return albums.map(albumMapper::toResponse);
     }
+
+    @Override
+    public Page<AlbumResponse> filterAlbumsByYear(int startYear, int endYear, Pageable pageable) {
+        Page<Album> albums = albumRepository.findByReleaseYearBetween(startYear, endYear, pageable);
+        if (albums.isEmpty()) {
+            throw new ResponseException("Aucun album trouvé entre les années " + startYear + " et " + endYear, HttpStatus.NOT_FOUND);
+        }
+        return albums.map(albumMapper::toResponse);
+    }
 }
