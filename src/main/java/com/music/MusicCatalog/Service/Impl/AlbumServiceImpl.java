@@ -1,5 +1,6 @@
 package com.music.MusicCatalog.Service.Impl;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +24,42 @@ public class AlbumServiceImpl implements AlbumService {
     @Autowired
     private AlbumMapper albumMapper;
 
+    // admin fonction
     @Override
     public AlbumResponse createAlbum(AlbumRequest request) {
         Album album = albumMapper.toEntity(request);
-        albumRepository.save(album);
-        return albumMapper.toResponse(album);
+        Album savedAlbum = albumRepository.save(album);
+        return albumMapper.toResponse(savedAlbum);
     }
 
+    @Override
+    public AlbumResponse updateAlbum(String id, AlbumRequest request) {
+        Optional<Album> album = albumRepository.findById(id);
+        if (album.isEmpty()) {
+            throw new ResponseException("Album non trouvé", HttpStatus.NOT_FOUND);
+        }
+
+        if(request.getTitle() != null) {
+            album.get().setTitle(request.getTitle());
+        }
+        if(request.getArtist() != null) {
+            album.get().setArtist(request.getArtist());
+        }
+        if (request.getReleaseYear() != null) {
+            album.get().setReleaseYear(request.getReleaseYear());
+        }
+        if(request.getGenre() != null) {
+            album.get().setGenre(request.getGenre());
+        }
+        Album savedAlbum = albumRepository.save(album.get());
+       
+        return albumMapper.toResponse(savedAlbum);
+    }
+
+
+
+
+    // all users fonction
     @Override
     public Page<AlbumResponse> getAllAlbums(Pageable pageable) {
         Page<Album> albums = albumRepository.findAll(pageable);

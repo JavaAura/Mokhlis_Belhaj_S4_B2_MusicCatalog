@@ -22,7 +22,6 @@ public class AlbumRequest {
     @NotBlank(message = "L'artiste est obligatoire")
     private String artist;
     
-    @NotNull(message = "L'année de sortie est obligatoire")
     @Min(value = 1980, message = "L'année de sortie doit être supérieure à 1980")
     @Max(value = 2024, message = "L'année de sortie doit être inférieure à 2024")
     private Integer releaseYear;
