@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlbumRequest {
+
+    private String id;
     
     @NotBlank(message = "Le titre est obligatoire")
     private String title;
@@ -21,5 +24,7 @@ public class AlbumRequest {
     @NotNull(message = "L'année de sortie est obligatoire")
     private Integer releaseYear;
     
+    @NotBlank(message = "Le genre est obligatoire")
     private String genre;
+    
 } 

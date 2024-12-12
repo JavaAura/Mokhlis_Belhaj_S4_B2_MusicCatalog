@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class SongSimpleResponse {
-    private String titre;
-    private Integer duree;
+    private String title;
+    private Integer duration;
     private Integer trackNumber;
+   
 } 

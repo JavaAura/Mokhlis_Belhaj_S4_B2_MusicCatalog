@@ -19,7 +19,6 @@ public class Song {
     private Integer duration;
     @PositiveOrZero(message = "Le numéro de piste doit être positif ou zéro")
     private Integer trackNumber;
-    
     @NotNull(message = "Une chanson doit appartenir à un album")
     @DBRef
     private Album album;

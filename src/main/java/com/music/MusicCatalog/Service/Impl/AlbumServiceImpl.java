@@ -1,6 +1,8 @@
 package com.music.MusicCatalog.Service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.music.MusicCatalog.DTO.request.AlbumRequest;
@@ -24,6 +26,12 @@ public class AlbumServiceImpl implements AlbumService {
         Album album = albumMapper.toEntity(request);
         albumRepository.save(album);
         return albumMapper.toResponse(album);
+    }
+
+    @Override
+    public Page<AlbumResponse> getAllAlbums(Pageable pageable) {
+        Page<Album> albums = albumRepository.findAll(pageable);
+        return albums.map(albumMapper::toResponse);
     }
     
 }

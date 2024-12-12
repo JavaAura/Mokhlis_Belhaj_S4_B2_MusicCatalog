@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlbumResponse {
-    private String id;
     private String title;
     private String artist;
     private Integer releaseYear;
     private String genre;
-    private List<SongResponse> songs;
+    private List<SongSimpleResponse> songs;
 } 

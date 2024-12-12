@@ -7,4 +7,5 @@ public class AlbumSimpleResponse {
     private String title;
     private String artist;
     private Integer releaseYear;
+    private String genre;
 } 
