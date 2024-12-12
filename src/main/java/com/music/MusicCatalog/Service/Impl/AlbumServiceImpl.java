@@ -56,6 +56,14 @@ public class AlbumServiceImpl implements AlbumService {
         return albumMapper.toResponse(savedAlbum);
     }
 
+    @Override
+    public void deleteAlbum(String id) {
+        Optional<Album> album = albumRepository.findById(id);
+        if (album.isEmpty()) {
+            throw new ResponseException("Album non trouvé", HttpStatus.NOT_FOUND);
+        }
+        albumRepository.delete(album.get());
+    }
 
 
 

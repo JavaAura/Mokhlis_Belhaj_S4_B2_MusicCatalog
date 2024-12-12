@@ -1,6 +1,8 @@
 package com.music.MusicCatalog.Controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -70,5 +72,26 @@ public class AdminAlbumController {
     @PutMapping("update")
     public AlbumResponse updateAlbum(@Valid @RequestParam String id,  @RequestBody AlbumRequest request) {
         return albumService.updateAlbum(id, request);
+    }
+
+
+
+    /**
+     * Delete an album with the provided ID
+     * @param id The album ID
+     */
+    @Operation(summary = "delete an album", description = "supprimer un album")
+    @ApiResponse(responseCode = "204", description = "album supprimé avec succès")
+    @ApiResponse(responseCode = "404", description = "album non trouvé", 
+    content = @Content(mediaType = "application/json", schema = @Schema(example = """
+        {
+            "message": "Album non trouvé",
+            "status": 404
+        }
+        """)))
+    @DeleteMapping("delete")
+    public ResponseEntity<Void> deleteAlbum(@Valid @RequestParam String id) {
+        albumService.deleteAlbum(id);
+        return ResponseEntity.noContent().build();
     }
 }

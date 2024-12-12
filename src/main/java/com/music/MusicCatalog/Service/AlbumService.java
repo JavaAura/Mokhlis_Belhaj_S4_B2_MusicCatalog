@@ -9,6 +9,7 @@ public interface AlbumService {
     // admin fonction
     AlbumResponse createAlbum(AlbumRequest request);
     AlbumResponse updateAlbum(String id, AlbumRequest request);
+    void deleteAlbum(String id);
 
     // all users fonction
     Page<AlbumResponse> getAllAlbums(Pageable pageable);
