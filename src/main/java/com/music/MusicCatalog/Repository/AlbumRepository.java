@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface AlbumRepository extends MongoRepository<Album, String> {
     
     Page<Album> findByTitleContaining(String title, Pageable pageable);
+    Page<Album> findByArtistContaining(String artist, Pageable pageable);
 } 

@@ -10,4 +10,5 @@ public interface AlbumService {
     AlbumResponse createAlbum(AlbumRequest request);
     Page<AlbumResponse> getAllAlbums(Pageable pageable);
     Page<AlbumResponse> getAlbumsByTitle(String title, Pageable pageable);
+    Page<AlbumResponse> getAlbumsByArtist(String artist, Pageable pageable);
 }

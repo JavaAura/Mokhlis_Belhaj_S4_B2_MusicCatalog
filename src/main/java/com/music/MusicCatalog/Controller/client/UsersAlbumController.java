@@ -57,7 +57,7 @@ public class UsersAlbumController {
      * @param sortOrder the sort order
      * @return the page of albums
      * **/
-    @GetMapping("/search")
+    @GetMapping("/searchByTitle")
     @Operation(summary = "Get albums by title", description = "Retrieves albums by title with pagination and sorting options")
     @ApiResponse(responseCode = "200", description = "Albums successfully retrieved", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
     @ApiResponse(responseCode = "404", description = "Albums not found", content = @Content(mediaType = "application/json", schema = @Schema(example = """
@@ -68,7 +68,7 @@ public class UsersAlbumController {
         """)))
     @ApiResponse(responseCode = "400", description = "Invalid request parameters", content = @Content(mediaType = "application/json", schema = @Schema(example = """
         {
-            "message": "Invalid request parameters",
+            "message": "le paramètre requis est manquant: title",
             "status": 400
         }
         """)))
@@ -79,5 +79,39 @@ public class UsersAlbumController {
                                                 @RequestParam(defaultValue = "asc") String sortOrder) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
         return albumService.getAlbumsByTitle(title, pageable);
+    }
+
+
+    /** 
+     * Get albums by artist
+     * @param artist the artist of the album
+     * @param page the page number
+     * @param size the page size
+     * @param sortBy the field to sort by
+     * @param sortOrder the sort order
+     * @return the page of albums
+     * **/
+    @GetMapping("/searchByArtist")
+    @Operation(summary = "Get albums by artist", description = "Retrieves albums by artist with pagination and sorting options")
+    @ApiResponse(responseCode = "200", description = "Albums successfully retrieved", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
+    @ApiResponse(responseCode = "404", description = "Albums not found", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+        {
+            "message": "Albums not found",
+            "status": 404
+        }
+        """)))
+    @ApiResponse(responseCode = "400", description = "Invalid request parameters", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+        {
+            "message": "Invalid request parameters :artist",
+            "status": 400
+        }
+        """)))
+    public Page<AlbumResponse> getAlbumsByArtist(@Valid @RequestParam(required = true) String artist,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size,
+                                                @RequestParam(defaultValue = "id") String sortBy,
+                                                @RequestParam(defaultValue = "asc") String sortOrder) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
+        return albumService.getAlbumsByArtist(artist, pageable);
     }
 }

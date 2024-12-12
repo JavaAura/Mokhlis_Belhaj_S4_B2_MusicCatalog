@@ -44,4 +44,13 @@ public class AlbumServiceImpl implements AlbumService {
         }
         return albums.map(albumMapper::toResponse);
     }
+
+    @Override
+    public Page<AlbumResponse> getAlbumsByArtist(String artist, Pageable pageable) {
+        Page<Album> albums = albumRepository.findByArtistContaining(artist, pageable);
+        if (albums.isEmpty()) {
+            throw new ResponseException("Aucun album trouvé de l'artiste: " + artist, HttpStatus.NOT_FOUND);
+        }
+        return albums.map(albumMapper::toResponse);
+    }
 }

@@ -3,6 +3,7 @@ package com.music.MusicCatalog.Exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -36,6 +37,16 @@ public class GlobalExceptionHandler {
             "Validation échouée: " + String.join("|and| ", errors),
             HttpStatus.BAD_REQUEST.value()
         );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+    // havdle exception for request param
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        String parameterName = ex.getParameterName();
+        ErrorResponse errorResponse = new ErrorResponse("Le paramètre requis est manquant: " + parameterName, HttpStatus.BAD_REQUEST.value());
+        
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
