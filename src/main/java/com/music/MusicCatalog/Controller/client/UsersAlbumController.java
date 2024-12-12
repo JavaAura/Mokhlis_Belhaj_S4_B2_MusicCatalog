@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -45,5 +46,38 @@ public class UsersAlbumController {
                                             @RequestParam(defaultValue = "asc") String sortOrder) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
         return albumService.getAllAlbums(pageable);
+    }
+
+    /** 
+     * Get albums by title
+     * @param title the title of the album
+     * @param page the page number
+     * @param size the page size
+     * @param sortBy the field to sort by
+     * @param sortOrder the sort order
+     * @return the page of albums
+     * **/
+    @GetMapping("/search")
+    @Operation(summary = "Get albums by title", description = "Retrieves albums by title with pagination and sorting options")
+    @ApiResponse(responseCode = "200", description = "Albums successfully retrieved", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
+    @ApiResponse(responseCode = "404", description = "Albums not found", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+        {
+            "message": "Albums not found",
+            "status": 404
+        }
+        """)))
+    @ApiResponse(responseCode = "400", description = "Invalid request parameters", content = @Content(mediaType = "application/json", schema = @Schema(example = """
+        {
+            "message": "Invalid request parameters",
+            "status": 400
+        }
+        """)))
+    public Page<AlbumResponse> getAlbumsByTitle(@Valid @RequestParam(required = true) String title,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size,
+                                                @RequestParam(defaultValue = "id") String sortBy,
+                                                @RequestParam(defaultValue = "asc") String sortOrder) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
+        return albumService.getAlbumsByTitle(title, pageable);
     }
 }
