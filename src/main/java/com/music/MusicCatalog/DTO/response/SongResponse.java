@@ -3,8 +3,8 @@ import lombok.Data;
 
 @Data
 public class SongResponse {
-    private String titre;
-    private Integer duree;
+    private String title;
+    private Integer duration;
     private Integer trackNumber;
     private AlbumSimpleResponse album;
 } 

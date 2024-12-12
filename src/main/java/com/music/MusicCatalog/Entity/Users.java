@@ -35,6 +35,7 @@ public class Users {
     private Boolean active;
 
     @NotNull(message = "La collection des rôles ne peut pas être nulle")
+    @Builder.Default
     private Collection<String> roles = new HashSet<>();
 
 }
