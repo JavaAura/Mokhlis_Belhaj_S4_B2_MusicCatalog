@@ -14,5 +14,6 @@ public interface SongRepository extends MongoRepository<Song, String> {
 
     // for the client
     Page<Song> findByTitleContaining(String title, Pageable pageable);
+    Page<Song> findByAlbumId(String albumId, Pageable pageable);
     
 }

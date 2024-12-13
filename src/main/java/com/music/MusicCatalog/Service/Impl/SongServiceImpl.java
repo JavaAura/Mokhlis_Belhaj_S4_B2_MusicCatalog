@@ -105,5 +105,12 @@ public class SongServiceImpl implements SongService {
         }
         return songs.map(songMapper::toResponse);
     }
+
+
+    @Override
+    public Page<SongResponse> getAllSongsByAlbum(String album, Pageable pageable) {
+        Page<Song> songs = songRepository.findByAlbumId(album, pageable);
+        return songs.map(songMapper::toResponse);
+    }
    
 }
