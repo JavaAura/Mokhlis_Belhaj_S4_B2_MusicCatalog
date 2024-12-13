@@ -96,5 +96,14 @@ public class SongServiceImpl implements SongService {
         Page<Song> songs = songRepository.findAll(pageable);
         return songs.map(songMapper::toResponse);
     }
+
+    @Override
+    public Page<SongResponse> getAllSongsByTitle(String title, Pageable pageable) {
+        Page<Song> songs = songRepository.findByTitleContaining(title, pageable);
+        if(songs.isEmpty()){
+            throw new ResponseException("Aucune chanson trouvée", HttpStatus.NOT_FOUND);
+        }
+        return songs.map(songMapper::toResponse);
+    }
    
 }
