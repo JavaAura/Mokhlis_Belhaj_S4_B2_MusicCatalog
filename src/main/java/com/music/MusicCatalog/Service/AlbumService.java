@@ -2,8 +2,12 @@ package com.music.MusicCatalog.Service;
 
 import com.music.MusicCatalog.DTO.request.AlbumRequest;
 import com.music.MusicCatalog.DTO.response.AlbumResponse;
+import com.music.MusicCatalog.Entity.Album;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 public interface AlbumService {
     // admin fonction
@@ -16,4 +20,8 @@ public interface AlbumService {
     Page<AlbumResponse> getAlbumsByTitle(String title, Pageable pageable);
     Page<AlbumResponse> getAlbumsByArtist(String artist, Pageable pageable);
     Page<AlbumResponse> filterAlbumsByYear(int startYear, int endYear, Pageable pageable);
+
+    // need it for song creation
+    Album getAlbumById(String id);
+    Album updateAlbum(Album album);
 }

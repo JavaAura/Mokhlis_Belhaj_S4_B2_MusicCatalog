@@ -1,6 +1,7 @@
 package com.music.MusicCatalog.Service.Impl;
 
 import java.util.Optional;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +11,13 @@ import org.springframework.stereotype.Service;
 import com.music.MusicCatalog.DTO.request.AlbumRequest;
 import com.music.MusicCatalog.DTO.response.AlbumResponse;
 import com.music.MusicCatalog.Entity.Album;
+import com.music.MusicCatalog.Entity.Song;
 import com.music.MusicCatalog.Exception.ResponseException;
 import com.music.MusicCatalog.Mapper.AlbumMapper;
 import com.music.MusicCatalog.Repository.AlbumRepository;
+import com.music.MusicCatalog.Repository.SongRepository;
 import com.music.MusicCatalog.Service.AlbumService;
+import com.music.MusicCatalog.Service.SongService;
 
 @Service
 public class AlbumServiceImpl implements AlbumService {
@@ -22,7 +26,11 @@ public class AlbumServiceImpl implements AlbumService {
     private AlbumRepository albumRepository;
 
     @Autowired
+    private SongRepository songRepository;
+
+    @Autowired
     private AlbumMapper albumMapper;
+
 
     // admin fonction
     @Override
@@ -62,6 +70,13 @@ public class AlbumServiceImpl implements AlbumService {
         if (album.isEmpty()) {
             throw new ResponseException("Album non trouvé", HttpStatus.NOT_FOUND);
         }
+        List<Song> songs = album.get().getSongs();
+        if (songs != null) {
+            for (Song song : songs) {
+                songRepository.delete(song);
+            }
+        }
+        
         albumRepository.delete(album.get());
     }
 
@@ -99,5 +114,17 @@ public class AlbumServiceImpl implements AlbumService {
             throw new ResponseException("Aucun album trouvé entre les années " + startYear + " et " + endYear, HttpStatus.NOT_FOUND);
         }
         return albums.map(albumMapper::toResponse);
+    }
+
+
+    // need it for song creation
+    @Override
+    public Album getAlbumById(String id) {
+        return albumRepository.findById(id).orElseThrow(()->  new ResponseException("Aucun album trouvé de l'album ", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public Album updateAlbum(Album album) {
+        return albumRepository.save(album);
     }
 }

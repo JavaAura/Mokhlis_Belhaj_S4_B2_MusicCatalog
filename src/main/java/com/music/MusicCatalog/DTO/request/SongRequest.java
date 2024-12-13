@@ -9,6 +9,8 @@ import lombok.Data;
 
 @Data
 public class SongRequest {
+
+    private String id;
     @NotBlank(message = "Le titre est obligatoire")
     private String title;
     

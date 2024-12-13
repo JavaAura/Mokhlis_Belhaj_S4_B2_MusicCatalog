@@ -1,9 +1,9 @@
 package com.music.MusicCatalog.Controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,17 +15,16 @@ import com.music.MusicCatalog.DTO.request.AlbumRequest;
 import com.music.MusicCatalog.DTO.response.AlbumResponse;
 import com.music.MusicCatalog.Service.AlbumService;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/admin/albums")
-@OpenAPIDefinition(info = @Info(title = "Admin Album API", version = "1.0.0"))
+@Tag(name = "Admin Album Controller", description = "Gestion des albums par l'administrateur")
 public class AdminAlbumController {
     
     @Autowired
@@ -39,7 +38,7 @@ public class AdminAlbumController {
      * @return The created album response
      */
     @Operation(summary = "Create a new album", description = "Creates a new album with the provided information")
-    @ApiResponse(responseCode = "200", description = "Album successfully created")
+    @ApiResponse(responseCode = "201", description = "Album successfully created")
     @ApiResponse(responseCode = "400",
      description = "Invalid request body - Validation errors", 
             content = @Content(mediaType = "application/json", schema = @Schema(example = """
@@ -49,8 +48,8 @@ public class AdminAlbumController {
         }
         """)))
     @PostMapping
-    public AlbumResponse createAlbum(@Valid @RequestBody AlbumRequest request) {
-        return albumService.createAlbum(request);
+    public ResponseEntity<AlbumResponse> createAlbum(@Valid @RequestBody AlbumRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.createAlbum(request));
     }
 
 
