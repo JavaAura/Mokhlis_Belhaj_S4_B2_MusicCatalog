@@ -2,6 +2,8 @@ package com.music.MusicCatalog.Service.Impl;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -87,5 +89,12 @@ public class SongServiceImpl implements SongService {
         return true;
     }
 
+
+    // client fonctions
+    @Override
+    public Page<SongResponse> getAllSongs(Pageable pageable) {
+        Page<Song> songs = songRepository.findAll(pageable);
+        return songs.map(songMapper::toResponse);
+    }
    
 }

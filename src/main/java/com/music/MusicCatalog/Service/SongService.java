@@ -1,5 +1,8 @@
 package com.music.MusicCatalog.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.music.MusicCatalog.DTO.request.SongRequest;
 import com.music.MusicCatalog.DTO.response.SongResponse;
 
@@ -10,5 +13,7 @@ public interface SongService {
     boolean deleteSong(String id);
 
     // client fonctions
+
+    Page<SongResponse> getAllSongs(Pageable pageable);
   
 }
