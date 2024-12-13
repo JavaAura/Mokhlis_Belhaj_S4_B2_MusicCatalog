@@ -74,6 +74,18 @@ public class SongServiceImpl implements SongService {
         Song updatedSong = songRepository.save(song);
         return songMapper.toResponse(updatedSong);
     }
-    
+
+    @Override
+    public boolean deleteSong(String id) {
+        Song song = songRepository.findById(id).orElseThrow(() -> new ResponseException("Chanson non trouvée", HttpStatus.NOT_FOUND));
+        songRepository.delete(song);
+        Album album = albumService.getAlbumById(song.getAlbum().getId());
+        List<Song> songs = album.getSongs();
+        songs.remove(song);
+        album.setSongs(songs);
+        albumService.updateAlbum(album);
+        return true;
+    }
+
    
 }

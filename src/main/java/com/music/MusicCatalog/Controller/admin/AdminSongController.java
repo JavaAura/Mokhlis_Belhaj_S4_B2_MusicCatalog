@@ -3,6 +3,7 @@ package com.music.MusicCatalog.Controller.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -68,5 +69,22 @@ public class AdminSongController {
     @PutMapping("/{id}")
     public ResponseEntity<SongResponse> updateSong(@PathVariable String id,  @RequestBody SongRequest request) {
         return ResponseEntity.ok(songService.updateSong(id, request));
+    }
+
+    /***
+     * Delete a song
+     * @param id The song ID
+     * @return The deleted song response
+     */
+    @Operation(
+        summary = "Supprimer une chanson",
+        description = "Supprime une chanson avec l'ID fourni"
+    )
+    @ApiResponse(responseCode = "200", description = "Chanson supprimée avec succès")
+    @ApiResponse(responseCode = "404", description = "Chanson non trouvée")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSong(@PathVariable String id) {
+        songService.deleteSong(id);
+        return ResponseEntity.noContent().build();
     }
 }

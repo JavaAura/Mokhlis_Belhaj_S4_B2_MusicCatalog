@@ -17,7 +17,7 @@ import com.music.MusicCatalog.Mapper.AlbumMapper;
 import com.music.MusicCatalog.Repository.AlbumRepository;
 import com.music.MusicCatalog.Repository.SongRepository;
 import com.music.MusicCatalog.Service.AlbumService;
-
+import com.music.MusicCatalog.Service.SongService;
 
 @Service
 public class AlbumServiceImpl implements AlbumService {
@@ -30,6 +30,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Autowired
     private AlbumMapper albumMapper;
+
 
     // admin fonction
     @Override
@@ -69,6 +70,13 @@ public class AlbumServiceImpl implements AlbumService {
         if (album.isEmpty()) {
             throw new ResponseException("Album non trouvé", HttpStatus.NOT_FOUND);
         }
+        List<Song> songs = album.get().getSongs();
+        if (songs != null) {
+            for (Song song : songs) {
+                songRepository.delete(song);
+            }
+        }
+        
         albumRepository.delete(album.get());
     }
 

@@ -7,6 +7,7 @@ public interface SongService {
     // admin fonctions
     SongResponse createSong(SongRequest request);
     SongResponse updateSong(String id, SongRequest request);
+    boolean deleteSong(String id);
 
     // client fonctions
   
