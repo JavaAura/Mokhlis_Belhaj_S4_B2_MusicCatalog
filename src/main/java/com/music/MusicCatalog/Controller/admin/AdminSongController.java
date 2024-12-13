@@ -3,7 +3,9 @@ package com.music.MusicCatalog.Controller.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.music.MusicCatalog.DTO.request.SongRequest;
 import com.music.MusicCatalog.DTO.response.SongResponse;
 import com.music.MusicCatalog.Service.SongService;
+
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -47,5 +50,23 @@ public class AdminSongController {
     @PostMapping
     public ResponseEntity<SongResponse> createSong( @Valid @RequestBody SongRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(songService.createSong(request));
+    }
+
+
+    /***
+     * Update a song
+     * @param id The song ID
+     * @param request The song update request
+     * @return The updated song response
+     */
+    @Operation(
+        summary = "Mettre à jour une chanson",
+        description = "Met à jour une chanson avec les informations fournies"
+    )
+    @ApiResponse(responseCode = "200", description = "Chanson mise à jour avec succès")
+    @ApiResponse(responseCode = "404", description = "Chanson non trouvée")
+    @PutMapping("/{id}")
+    public ResponseEntity<SongResponse> updateSong(@PathVariable String id,  @RequestBody SongRequest request) {
+        return ResponseEntity.ok(songService.updateSong(id, request));
     }
 }
