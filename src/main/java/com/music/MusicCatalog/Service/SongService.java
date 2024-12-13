@@ -16,5 +16,6 @@ public interface SongService {
 
     Page<SongResponse> getAllSongs(Pageable pageable);
     Page<SongResponse> getAllSongsByTitle(String title, Pageable pageable);
+    Page<SongResponse> getAllSongsByAlbum(String album, Pageable pageable);
   
 }

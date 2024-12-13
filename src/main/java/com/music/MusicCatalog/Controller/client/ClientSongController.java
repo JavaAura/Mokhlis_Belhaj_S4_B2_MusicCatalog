@@ -71,4 +71,23 @@ public class ClientSongController {
         Page<SongResponse> songs = songService.getAllSongsByTitle(title, pageable);
         return ResponseEntity.ok(songs);
     }
+
+    /**
+     * Search songs by album
+     * @param album the album of the song
+     * @return the list of songs
+     */
+    @Operation(summary = "Recherche de chansons par album", description = "Recherche de chansons par album avec pagination et tri")
+    @ApiResponse(responseCode = "200", description = "Chansons récupérées avec succès", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class)))
+    @ApiResponse(responseCode = "404", description = "Aucune chanson trouvée", content = @Content(mediaType = "application/json", schema = @Schema()))
+    @GetMapping("/searchByAlbum")
+    public ResponseEntity<Page<SongResponse>> searchByAlbum(@Valid @RequestParam String album, @RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam(defaultValue = "id") String sortBy,
+                                                          @RequestParam(defaultValue = "asc") String sortOrder) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
+        Page<SongResponse> songs = songService.getAllSongsByAlbum(album, pageable);
+        return ResponseEntity.ok(songs);
+    }
 }
+
