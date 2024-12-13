@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -35,5 +36,5 @@ public class Album {
     @NotBlank(message = "Le genre est obligatoire")
     private String genre;
     @DBRef
-    private List<Song> songs;
-} 
+    private List<Song> songs = new ArrayList<>();
+}

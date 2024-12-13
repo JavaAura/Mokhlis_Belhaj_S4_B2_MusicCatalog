@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.music.MusicCatalog.DTO.response.AlbumResponse;
 import com.music.MusicCatalog.Service.AlbumService;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +25,7 @@ import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api/users/albums")
-@OpenAPIDefinition(info = @Info(title = "Users Album API", version = "1.0.0"))
+@Tag(name = "Users Album Controller", description = "Gestion des albums par les utilisateurs")
 public class UsersAlbumController {
     @Autowired
     private AlbumService albumService;
