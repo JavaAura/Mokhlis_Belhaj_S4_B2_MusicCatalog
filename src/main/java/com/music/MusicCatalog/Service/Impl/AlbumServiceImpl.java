@@ -17,7 +17,6 @@ import com.music.MusicCatalog.Mapper.AlbumMapper;
 import com.music.MusicCatalog.Repository.AlbumRepository;
 import com.music.MusicCatalog.Repository.SongRepository;
 import com.music.MusicCatalog.Service.AlbumService;
-import com.music.MusicCatalog.Service.SongService;
 
 @Service
 public class AlbumServiceImpl implements AlbumService {
