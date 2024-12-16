@@ -98,6 +98,7 @@ http://localhost:8081/swagger-ui/index.html
 
 ## 🔐 Authentification
 
+
 L'API utilise JWT (JSON Web Token) pour l'authentification:
 
 1. Inscrire un nouvel utilisateur avec `/api/auth/register`
@@ -111,11 +112,16 @@ L'API utilise JWT (JSON Web Token) pour l'authentification:
 - **USER**: Peut voir les albums et les chansons
 - **ADMIN**: Peut gérer les albums, les chansons, les utilisateurs et les rôles
 
+### Defailt ADMIN
+
+- **username**: admin
+- **password**: admin123
+
 ## 📝 Example Requests
 
 ### Register User
 ```json
-POST /api/auth/register
+POST localhost:8081/api/auth/register
 {
     "username": "user1",
     "password": "password123"
@@ -124,7 +130,7 @@ POST /api/auth/register
 
 ### Login User
 ```json
-POST /api/auth/login
+POST localhost:8081/api/auth/login
 {
     "username": "user1",
     "password": "password123"
@@ -136,8 +142,13 @@ POST /api/auth/login
 Authentifié avec le token JWT
 Authorization : Bearer <votre_token_jwt>
 ```json
-GET /api/users/albums
+GET localhost:8081/api/users/albums
 ```
+
+
+### jira 
+
+[jira](https://belhajmokhlis.atlassian.net/jira/software/projects/MUS/boards/270)
 
 
 
